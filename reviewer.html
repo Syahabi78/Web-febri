@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviewer</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body class="reviewer">
+    <h1>Ulasan Produk</h1>
+    <form id="reviewForm">
+        <label for="title">Nama produk:</label>
+        <input type="text" id="title" required>
+        <label for="content">Isi:</label>
+        <input type="text" id="Isi" required>
+        <button type="submit">Tambah Ulasan</button>
+    </form>
+    
+    <table id="reviewTable">
+        <thead>
+            <tr>
+                <th>Nama produk</th>
+                <th>Isi</th>
+                <th>Hapus</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewTableBody = document.querySelector('#reviewTable tbody');
+        let reviews = [];
+
+        reviewForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('Isi').value;
+            
+            // Tambahkan ulasan baru
+            const newReview = { title, content };
+            reviews.push(newReview);
+            updateTable();
+            
+            // Reset form
+            reviewForm.reset();
+        });
+
+        function updateTable() {
+            reviewTableBody.innerHTML = ''; // Clear table body
+
+            reviews.forEach((review, index) => {
+                const row = document.createElement('tr');
+                
+                const titleCell = document.createElement('td');
+                titleCell.textContent = review.title;
+                row.appendChild(titleCell);
+                
+                const contentCell = document.createElement('td');
+                contentCell.textContent = review.content;
+                row.appendChild(contentCell);
+                
+                const deleteCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Hapus';
+                deleteButton.addEventListener('click', () => {
+                    reviews.splice(index, 1);
+                    updateTable();
+                });
+                deleteCell.appendChild(deleteButton);
+                row.appendChild(deleteCell);
+                
+                reviewTableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

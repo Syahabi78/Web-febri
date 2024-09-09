@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontak</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body class="kontak">
+    <h1>Kontak</h1>
+    <form id="contactForm">
+        <label for="name">Nama:</label>
+        <input type="text" id="name" required>
+        <label for="phone">Telepon:</label>
+        <input type="text" id="phone" required>
+        <button type="submit">Tambah Kontak</button>
+    </form>
+    
+    <table id="contactTable">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Telepon</th>
+                <th>Hapus</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const contactTableBody = document.querySelector('#contactTable tbody');
+        let contacts = [];
+
+        contactForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            
+            // Tambahkan kontak baru
+            const newContact = { name, phone };
+            contacts.push(newContact);
+            updateTable();
+            
+            // Reset form
+            contactForm.reset();
+        });
+
+        function updateTable() {
+            contactTableBody.innerHTML = ''; // Clear table body
+
+            contacts.forEach((contact, index) => {
+                const row = document.createElement('tr');
+                
+                const nameCell = document.createElement('td');
+                nameCell.textContent = contact.name;
+                row.appendChild(nameCell);
+                
+                const phoneCell = document.createElement('td');
+                phoneCell.textContent = contact.phone;
+                row.appendChild(phoneCell);
+                
+                const deleteCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Hapus';
+                deleteButton.addEventListener('click', () => {
+                    contacts.splice(index, 1);
+                    updateTable();
+                });
+                deleteCell.appendChild(deleteButton);
+                row.appendChild(deleteCell);
+                
+                contactTableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
